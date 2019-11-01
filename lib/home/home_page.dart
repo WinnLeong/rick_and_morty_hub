@@ -26,44 +26,84 @@ class _HomeState extends State<Home> {
         FetchMore fetchMore,
       }) {
         return Scaffold(
-          body: NestedScrollView(
-            headerSliverBuilder:
-                (BuildContext context, bool innerBoxIsScrolled) {
-              return <Widget>[
-                SliverAppBar(
-                  expandedHeight: 220.0,
-                  floating: false,
-                  pinned: false,
-                  backgroundColor: Color(0xE6e07c27),
-                  flexibleSpace: FlexibleSpaceBar(
-                    /* centerTitle: true,
-                    title: Text(
-                      "Rick N Morty",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16.0,
+          body: DefaultTabController(
+            length: 2,
+            child: NestedScrollView(
+              headerSliverBuilder:
+                  (BuildContext context, bool innerBoxIsScrolled) {
+                return <Widget>[
+                  SliverAppBar(
+                    expandedHeight: 220.0,
+                    floating: false,
+                    pinned: false,
+                    backgroundColor: Color(0xE6e07c27),
+                    flexibleSpace: FlexibleSpaceBar(
+                      /* centerTitle: true,
+                      title: Text(
+                        "Rick N Morty",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 16.0,
+                        ),
+                      ), */
+                      background: Image.asset(
+                        image.headerImage,
+                        fit: BoxFit.cover,
                       ),
-                    ), */
-                    background: Image.asset(
-                      image.headerImage,
-                      fit: BoxFit.cover,
                     ),
                   ),
-                ),
-              ];
-            },
-            body: Column(
-              children: <Widget>[
-                Flexible(
-                  flex: 9,
-                  child: getCharacters(queryResult),
-                ),
-                renderNavigationButtons(queryResult),
-              ],
+                  SliverList(
+                    delegate: SliverChildListDelegate(
+                      [
+                        Material(
+                          color: color.primaryColor,
+                          child: TabBar(
+                            labelColor: Colors.black87,
+                            unselectedLabelColor: Colors.grey,
+                            indicatorColor: color.secondaryColor,
+                            tabs: [
+                              Tab(
+                                icon: Icon(Icons.info),
+                              ),
+                              Tab(
+                                icon: Icon(Icons.video_library),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ];
+              },
+              body: TabBarView(
+                children: [
+                  characterArchive(queryResult),
+                  episodesArchive(),
+                ],
+              ),
             ),
           ),
         );
       },
+    );
+  }
+
+  characterArchive(queryResult) {
+    return Column(
+      children: <Widget>[
+        Flexible(
+          flex: 9,
+          child: getCharacters(queryResult),
+        ),
+        renderNavigationButtons(queryResult),
+      ],
+    );
+  }
+
+  episodesArchive() {
+    return Center(
+      child: Text('Episodes'),
     );
   }
 
